@@ -1,0 +1,47 @@
+<template>
+<div class="page" data-name="about">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a href="#" class="link back">
+          <i class="f7-icons">arrow_left</i>
+          <!--<span class="ios-only">Back</span>-->
+        </a>
+      </div>
+      <div class="title">Сектор {{zone.title}}</div>
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="row block-title">
+      <div class="col-20"></div>
+      <div class="col-80">
+        <p>Емкость</p>
+        <h1>{{zone.capacity}} <span>авто</span></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-20 text-align-right">
+        <p><i class="f7-icons" style="color: #989898; font-size: 19px;">time</i></p>
+      </div>
+      <div class="col-80">
+        <p class="last-session">Последние обходы</p>
+      </div>
+    </div>
+    {{#each zone.sessions}}
+    <div class="row session">
+      <div class="col-20"></div>
+      <div class="col-80">
+        <p class="date">{{title}}</p>
+        <h2>{{countCar}} <span>авто</span></h2>
+        <div class="row">
+          <div class="slider col-80">
+            <div class="active" style="width: {{percent}}%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+
+  </div>
+</div>
+</template>

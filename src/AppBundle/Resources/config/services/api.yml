@@ -1,0 +1,24 @@
+parameters:
+    api.password_encoder.class: AppBundle\Encoder\PasswordEncoder
+    api.listener.access_token.class: AppBundle\Listener\API\AccessTokenListener
+    api.json_exception_listener.class: AppBundle\Listener\API\JsonExceptionListener
+    api.token_generator.class: AppBundle\Generator\API\UniqueTokenGenerator
+
+services:
+    api.password_encoder:
+        class: '%api.password_encoder.class%'
+        arguments: ['@security.encoder_factory']
+
+    api.listener.access_token:
+        class: '%api.listener.access_token.class%'
+        arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: beforeController }
+
+    api.json.exception_listener:
+        class: '%api.json_exception_listener.class%'
+        tags:
+             - {name: kernel.event_listener, event: kernel.exception, method: onKernelException}
+
+    api.token_generator:
+        class: '%api.token_generator.class%'

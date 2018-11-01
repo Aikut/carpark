@@ -1,0 +1,177 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container" style="padding-top: 120px">
+        <div class="row">
+            <div class="page-content">
+                {#<div class="block text-align-center">#}
+                    {#<input class="timepicker">#}
+                {#</div>#}
+                {##}
+                <div class="block text-align-center">
+                    <p>
+                        <input class="car-number" id="car-number">
+
+                    </p>
+                </div>
+                <div class="keyboard text-align-center">
+                    <div class="row">
+
+                        <div class="col-4" onclick="input(1)">
+                            <div class="box">
+                                <a href="#">1</a>
+                            </div>
+                        </div>
+                        <div class="col-4" onclick="input(2)">
+                            <div class="box">
+                                <a href="#">2</a>
+                            </div>
+                        </div>
+                        <div class="col-4" onclick="input(3)">
+                            <div class="box">
+                                <a href="#">3</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-4" onclick="input(4)">
+                            <div class="box">
+                                <a href="#">4</a>
+                            </div>
+                        </div>
+                        <div class="col-4" onclick="input(5)">
+                            <div class="box">
+                                <a href="#">5</a>
+                            </div>
+                        </div>
+                        <div class="col-4" onclick="input(6)">
+                            <div class="box">
+                                <a href="#">6</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+
+                        <div class="col-4" onclick="input(7)">
+                            <div class="box">
+                                <a href="#">7</a>
+                            </div>
+                        </div>
+                        <div class="col-4" onclick="input(8)">
+                            <div class="box">
+                                <a href="#">8</a>
+                            </div>
+                        </div>
+                        <div class="col-4" onclick="input(9)">
+                            <div class="box">
+                                <a href="#">9</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col-4" onclick="input(0)">
+                            <div class="box"><a href="#">0</a></div>
+                        </div>
+                        <div class="col-4" onclick="input(-1)">
+                            <div class="box">
+                                <a href="#" id="backspace"><i class="fa fa-long-arrow-left"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6" id="car-checkbox"><p>
+                                <label class="checkbox">
+                                    <input id="breaker" type="checkbox">
+                                </label> Нарушитель</p></div>
+
+                        <div class="col-6" id="save"><a href="#" onclick="addCar()" ><i class="fa fa-check car-number_add"></i></a></div>
+                        <div class="col-6" id="load"><a ><i class="car-number_add fa fa-refresh"></i></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="keyboard-btn">
+                <div class="col-md-6 text-center">
+                    <a href="{{ path('zone_info', { id : session.zone.id }) }}" class="btn btn-default">Результаты</a>
+                </div>
+                <div class="col-md-6 text-center">
+                    <a href="{{ path('session_close', { id : session.id }) }}" class="btn btn-default">Закончить обход</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    {{ parent() }}
+    <script>
+        function input(number) {
+
+            if (number === -1){
+                var input = $('#car-number').val();
+                if (input.length > 0){
+                    input = input.slice(0, -1);
+                    $('#car-number').val(input);
+                }
+            }
+
+            if (number <= '9' && number >= '0'){
+                if ($('#car-number').val().length < 4){
+                    $('#car-number').val($('#car-number').val() + number);
+                }
+            }
+
+            if ($('#car-number').val().length > 0){
+                $('#backspace').show();
+            } else{
+                $('#backspace').hide();
+            }
+
+            if ($('#car-number').val().length == 4){
+                $('#car-checkbox').css('visibility', 'visible');
+                $('#save').show();
+            } else{
+                $("#save").hide();
+                $('#car-checkbox').css('visibility', 'hidden');
+            }
+        }
+        $('#car-number').keypress(function (e) {
+            if (e.which >= '0' && e.which <= '9'){
+                return true;
+            }
+            return false;
+        });
+        function  addCar() {
+            $('#save').hide();
+            $('#load').show();
+
+            var car = $('#car-number').val();
+            var breaker = 0;
+            if($("#breaker").is(':checked')){
+                breaker = 1;
+            }
+            var sessionId = '{{ session.id }}';
+
+            var url = Routing.generate('session_add_car', { id : sessionId, carNumber : car, breaker : breaker });
+
+
+            $.ajax({
+                url: url,
+                success: function(result){
+                    $('#car-checkbox').css('visibility', 'hidden');
+
+                    $('#car-checkbox input').prop('checked', false);
+
+                    $('#car-number').val("");
+                    $('#save').hide();
+                    $('#backspace').hide();
+                    $('#load').hide()
+                }
+            });
+
+        }
+    </script>
+{% endblock %}

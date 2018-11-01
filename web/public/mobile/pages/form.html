@@ -1,0 +1,155 @@
+<template>
+<div class="page" data-name="about">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a href="/" onclick="initMap()" class="link back">
+          <i class="f7-icons">arrow_left</i>
+        </a>
+      </div>
+      <div class="title">Сектор {{zone.title}}</div>
+      <div class="right">
+        <!--<input type="time-local" placeholder="Please choose...">-->
+        <p id="session-cars"></p>
+        <a href="#"  @click="close()" class="link icon-onl">
+          <i class="f7-icons">check</i>
+        </a>
+        <a href="/info/{{zone.id}}/" class="link icon-only">
+          <i class="f7-icons">info</i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="block text-align-center">
+      <input class="timepicker">
+    </div>
+    <div class="block text-align-center">
+      <p><input class="car-number" id="car-number"></p>
+    </div>
+    <div class="keyboard text-align-center">
+      <div class="row">
+        <div class="col-4" @click="input(1)"><a href="#">1</a></div>
+        <div class="col-4" @click="input(2)"><a href="#">2</a></div>
+        <div class="col-4" @click="input(3)"><a href="#">3</a></div>
+      </div>
+      <div class="row">
+        <div class="col-4" @click="input(4)"><a href="#">4</a></div>
+        <div class="col-4" @click="input(5)"><a href="#">5</a></div>
+        <div class="col-4" @click="input(6)"><a href="#">6</a></div>
+      </div>
+      <div class="row">
+        <div class="col-4" @click="input(7)"><a href="#">7</a></div>
+        <div class="col-4" @click="input(8)"><a href="#">8</a></div>
+        <div class="col-4" @click="input(9)"><a href="#">9</a></div>
+      </div>
+      <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4" @click="input(0)"><a href="#">0</a></div>
+        <div class="col-4" @click="input(-1)"><a href="#" id="backspace"><i class="f7-icons">close_round_fill</i></a></div>
+      </div>
+      <div class="row">
+        <div class="col-4" id="car-checkbox"><p><label class="checkbox"><input id="breaker" type="checkbox"><i class="icon-checkbox"></i></label> Нарушитель</p></div>
+        <div class="col-4"></div>
+        <div class="col-4" id="save"><a href="#" @click="addCar()" ><i class="f7-icons car-number_add">arrow_right_fill</i></a></div>
+        <div class="col-4" id="load"><a ><i class="material-icons car-number_add md-only">autorenew</i></a></div>
+      </div>
+    </div>
+  </div>
+</div>
+</template>
+<script>
+
+        return {
+            methods: {
+                input: function (value) {
+                    //$$('#car-number').val(value);
+
+                    if (value === -1){
+                        var input = $$('#car-number').val();
+                        if (input.length > 0){
+                            input = input.slice(0, -1);
+                            $$('#car-number').val(input);
+                        }
+                    } else{
+                        if ($$('#car-number').val().length < 4){
+                            $$('#car-number').val($$('#car-number').val() + value);
+                        }
+                    }
+
+                    if ($$('#car-number').val().length > 0){
+                        $$('#backspace').show();
+                    } else {
+                        $$('#backspace').hide();
+                    }
+
+                    if ($$('#car-number').val().length === 4){
+                        $$('#save').show();
+                        $$('#car-checkbox').css('visibility', 'visible');
+                    } else {
+                        $$('#save').hide();
+                        $$('#car-checkbox').css('visibility', 'hidden');
+                    }
+                },
+                addCar: async function (){
+
+
+                    $$('#save').hide();
+                    $$('#load').show();
+
+                    var sessionId = this.session.id;
+                    var car = $$('#car-number').val();
+                    var breaker = 0;
+                    if($$("#breaker").is(':checked')){
+                        breaker = 1;
+                    }
+
+                    var url = baseUrl + 'session/add-car/' + sessionId + '/' + car + '/' + breaker;
+                    var token = localStorage.getItem("user_token");
+
+                    this.$app.request({
+                        url: url,
+                        dataType: 'json',
+                        //async: false,
+                        beforeSend : function(xhr){
+                            xhr.setRequestHeader('token', token);
+                        },
+                        success: function (data) {
+                            $$('#car-checkbox').css('visibility', 'hidden');
+
+                            $$('#car-checkbox input').prop('checked', false);
+
+                            $$('#car-number').val("");
+                            $$('#save').hide();
+                            $$('#backspace').hide();
+                            $$('#session-cars').html(data.cars);
+                            $$('#load').hide();
+                            
+                        }
+                    });
+                },
+                close : function(){
+
+                    var app = this.$app;
+                    var sessionId = this.session.id;
+                    var url = baseUrl + 'session/close/' + sessionId;
+                    var token = localStorage.getItem("user_token");
+
+                    this.$app.dialog.confirm('Завершить обход?', function () {
+                        app.request({
+                            url: url,
+                            dataType: 'json',
+                            //async: false,
+                            beforeSend : function(xhr){
+                                xhr.setRequestHeader('token', token);
+                            },
+                            success: function (data) {
+                                window.location.reload();
+                            }
+                        });
+                    });
+                }
+            },
+        }
+
+</script>

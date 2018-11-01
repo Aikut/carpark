@@ -1,0 +1,14 @@
+{% extends '::base.html.twig' %}
+{% block  header %}
+    {% include '::header.html.twig' %}
+{% endblock %}
+{% block body %}
+    <div class="container" style="margin-top: 10px">
+        <br>
+        <div class="row">
+            <h1>{{ aio_get.getWord('_page_error')}}</h1>
+            <h3>{{ aio_get.getWord('_page_error_explain')|replace({ ('status_code_status_text'): '"'~status_code ~' '~ status_text~'"' }) }}</h3>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+parameters:
+
+services:
+#    app.formatter.media:
+#        class: AppBundle\Formatter\MediaFormatter
+#        arguments:  ['@request_stack',  '@doctrine.orm.entity_manager', '@sonata.media.twig.extension']
+
+
+    app.formatter.zone:
+        class: AppBundle\Formatter\ZoneFormatter
+        arguments:  []
+
+    app.formatter.session:
+        class: AppBundle\Formatter\SessionFormatter
+        arguments:  []

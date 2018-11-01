@@ -1,0 +1,89 @@
+{% extends '::chart/base.html.twig' %}
+{% block body %}
+    <div class="container" style="padding-top: 120px">
+        <div class="row">
+            <div class="col-md-3">
+                {% render(controller('AppBundle:Chart:leftMenu', { 'type' : 'cars' })) %}
+            </div>
+            <div class="col-md-9">
+
+                {#{% render(controller('AppBundle:Chart:getChart',{'id':4})) %}#}
+                <div class="text-center">
+                    <div class="single-chart">
+                        <div id="c-myChart3">
+                            <canvas id="myChart3" width="" height=""></canvas>
+                        </div>
+                        <h4>
+                            <a href="#" data-toggle="modal"
+                               data-target="#myModal1">
+                                Зона {{ zone }}
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+      $('#myChart3').remove(); // this is my <canvas> element
+      $('#c-myChart3').append('<canvas id="myChart3"><canvas>');
+      var ctx = document.getElementById('myChart3').getContext('2d');
+      var myChart3 = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [
+              {% for item in session %}
+            '{{ item.created | date('H:i') }}',
+              {% endfor %}
+          ],
+          datasets: [
+            {
+              label: 'нарушители',
+              data: [
+                  {% for item in session %}
+                  {% set counter=0 %}
+                  {% for car in item.cars %}
+                  {% if car.breaker %}
+                  {% set counter=counter+1 %}
+                  {% endif %}
+                  {% endfor %}
+                  {{ counter }},
+                  {% endfor %}
+              ],
+              backgroundColor: 'rgba(255, 0, 0, 0.3)',
+            },
+            {
+              label: 'машины',
+              data: [
+                  {% for item in session %}
+                  {{ item.cars|length }},
+                  {% endfor %}
+              ],
+              backgroundColor: 'rgba(61,154,197,0.7)',
+            },
+          ],
+        },
+        options: {
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                },
+              }],
+          },
+        },
+      });
+    </script>
+
+    <script>
+        if( $(window).width() > 992 ){
+            $('#collapse-btn').addClass('collapsed');
+            $("#collapseExample").removeClass("collapse").addClass("in");
+        }
+    </script>
+{% endblock %}

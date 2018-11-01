@@ -1,0 +1,74 @@
+{% extends '::chart/base.html.twig' %}
+{% block body %}
+    <div class="container" style="padding-top: 120px">
+        <div class="row">
+            <div class="col-md-3">
+                {% render(controller('AppBundle:Chart:leftMenu', { 'type' : 'parking-time' })) %}
+            </div>
+            <div class="col-md-9">
+
+                <div class="text-center">
+                    <div class="single-chart">
+                        <div id="c-myChart3">
+                            <canvas id="myChart3" width="" height=""></canvas>
+                        </div>
+                        <h4>
+                            <a href="#" data-toggle="modal"
+                               data-target="#myModal1">
+                                Зона {{ zone }}
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+      $('#myChart3').remove(); // this is my <canvas> element
+      $('#c-myChart3').append('<canvas id="myChart3"><canvas>');
+      var ctx = document.getElementById('myChart3').getContext('2d');
+
+      var myChart3 = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: [
+              {% for item in data %}
+            '{{ item.time}}',
+              {% endfor %}
+          ],
+          datasets: [
+            {
+              label: 'машины',
+              data: [
+                  {% for item in data %}
+                  {{ item.count }},
+                  {% endfor %}
+              ],
+              backgroundColor: 'rgba(61,154,197,0.7)',
+            },
+          ],
+        },
+        options: {
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                },
+              }],
+          },
+        },
+      });
+    </script>
+
+    <script>
+        if( $(window).width() > 992 ){
+            $('#collapse-btn').addClass('collapsed');
+            $("#collapseExample").removeClass("collapse").addClass("in");
+        }
+    </script>
+{% endblock %}

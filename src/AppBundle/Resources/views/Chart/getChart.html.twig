@@ -1,0 +1,61 @@
+<div class="col-xs-12 text-center">
+    <div class="single-chart">
+        <div id="c-myChart3">
+            <canvas id="myChart3" width="" height=""></canvas>
+        </div>
+        <h4>
+            <a href="#" data-toggle="modal"
+               data-target="#myModal1">
+                test
+            </a>
+        </h4>
+    </div>
+</div>
+{% block javascripts %}
+    {{ parent() }}
+<script type="text/javascript">
+
+
+    $('#myChart3').remove(); // this is my <canvas> element
+    $('#c-myChart3').append('<canvas id="myChart3"><canvas>');
+    var ctx = document.getElementById('myChart3').getContext('2d');
+    var myChart3 = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [
+                {% for item in session %}
+                '{{ item.created | date('H:i') }}',
+                {% endfor %}
+            ],
+            datasets: [
+                {
+                    label: 'test3',
+                    data: [
+                        {% for item in session %}
+                        {{ item.cars|length }},
+                        {% endfor %}
+                    ],
+                    backgroundColor: 'rgba(61,154,197,0.7)'
+                }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [
+                    {
+                        ticks: {
+                            beginAtZero: true,
+                        },
+                    }],
+            },
+        },
+    });
+</script>
+
+    <script>
+        if( $(window).width() > 992 ){
+            $('#collapse-btn').addClass('collapsed');
+            $("#collapseExample").removeClass("collapse").addClass("in");
+        }
+    </script>
+{% endblock %}

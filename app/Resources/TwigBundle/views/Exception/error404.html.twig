@@ -1,0 +1,13 @@
+{% extends  '::base.html.twig' %}
+{% block  header %}
+    {% include '::header.html.twig' %}
+{% endblock %}
+{% block body %}
+    <div class="container" style="margin-top: 10px">
+        <br>
+        <div class="row">
+            <h1>{{ aio_get.getWord('_page_404')}}</h1>
+            <h3>{{ aio_get.getWord('_page_404_explain') }}</h3>
+        </div>
+    </div>
+{% endblock %}

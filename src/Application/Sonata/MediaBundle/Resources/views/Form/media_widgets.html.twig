@@ -1,0 +1,73 @@
+{% block sonata_media_type_widget %}
+    <script>
+    </script>
+    <div class="row media_delete_{{ value.id }}">
+        <div class="col-md-4 pull-left">
+            {% if value is not empty and value.providerReference %}
+                {% if sonata_admin_enabled is defined and sonata_admin_enabled %}
+                    <a href="{{ sonata_admin.admin.getConfigurationPool().adminByAdminCode('sonata.media.admin.media').generateObjectUrl('edit', value) }}">
+                        <strong>{{ value.name }}</strong>
+                    </a>
+                {% else %}
+                    <strong>{{ value.name }}</strong>
+                {% endif %}
+            {% else %}
+                <strong>{{ 'no_linked_media'|trans({}, 'SonataMediaBundle') }}</strong>
+            {% endif %}
+        </div>
+
+        {#<div class="col-md-3 pull-left"><strong>{{ 'widget_headline_information'|trans({}, 'SonataMediaBundle') }}</strong></div>#}
+        {#<div class="col-md-2 pull-left"><strong>{{ 'link_media'|trans({}, 'SonataMediaBundle') }}</strong></div>#}
+    </div>
+    <div class="row media_delete_{{ value.id }}">
+        <div class="col-md-4 pull-left">
+            {% if value is not empty and value.providerReference %}
+                <div class="pull-left" style="margin-right: 5px">
+                    {% thumbnail value, 'admin' with {'class': 'img-polaroid media-object'} %}
+                </div>
+            {% else %}
+                <div class="pull-left" style="margin-right: 5px">
+                    <img src="{{ asset('bundles/sonatamedia/grey.png') }}" class="img-polaroid media-object" style="width: 85px; height: 85px"/>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-2 pull-left" id="edit-block">
+            {{ block('form_widget') }}
+
+
+            <a id="delete-button" onclick="deleteMediaItem({{ value.id }}); return false;" class="btn btn-danger btn-sm">
+                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                Удалить
+            </a>
+
+            <script>
+                function checkIsCover(){
+                    var data = '{{ value.id }}';
+                    if($('.media_delete_' + data + ' #edit-block > div').attr('id').indexOf("cover") >= 0){
+                        $('#edit-block > #delete-button').remove();
+                    }
+                    if($('.media_delete_' + data + ' #edit-block > div').attr('id').indexOf("Cover") >= 0){
+                        $('#edit-block > #delete-button').remove();
+                    }
+                }
+                checkIsCover();
+
+                function deleteMediaItem(data) {
+                    var url = Routing.generate('photo_gallery_media_delete', { id : data });
+                    $.ajax({
+                        url: url,
+                        success:function (result) {
+                        }
+                    }).done(function(result) {
+//                        alert(result);
+                        if(result == 1){
+                            $($('.media_delete_'+data).parent().parent()).remove();
+                        }
+                    });
+                    return false;
+                }
+            </script>
+
+        </div>
+    </div>
+{% endblock sonata_media_type_widget %}

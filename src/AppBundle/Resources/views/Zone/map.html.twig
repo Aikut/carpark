@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Серебрянка</title>
+        <link type="text/css" rel="stylesheet" href="{{ asset('public/css/bootstrap.min.css') }}"/>
+        {#<link type="text/css" rel="stylesheet" href="{{ asset('public/css/bootstrap-theme.css') }}"/>#}
+        {#<link type="text/css" rel="stylesheet" href="{{ asset('public/css/bootstrap-theme.min.css') }}"/>#}
+        {#<link type="text/css" rel="stylesheet" href="{{ asset('public/css/bootstrap.css') }}"/>#}
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .infoWindow{
+            font-size: 14px;
+            color: white !important;
+            font-weight: bold !important;
+            text-transform: uppercase;
+        }
+
+        .gm-style .gm-style-iw {
+            top: 40px !important;
+        }
+        /*style the box*/
+/*
+        .gm-style .gm-style-iw {
+            background-color: #3C61AD !important;
+            top: 12px !important;
+            left: 0 !important;
+            display: block !important;
+        }
+
+        !*style the p tag*!
+        .gm-style .gm-style-iw #google-popup p{
+            padding: 0;
+        }
+*/
+
+
+        /*style the arrow*/
+        .gm-style div div div div div div div div {
+
+            padding: 0;
+            margin: 0;
+            top: -12px;
+
+            font-size: 12px;
+        }
+
+        .gm-style div div div div div div  {
+            box-shadow: none !important;
+        }
+
+
+        .gm-style div div div div div div img {
+            display: none !important;
+        }
+
+
+        .gm-style div div div div{
+            background: transparent !important;
+            border: none !important;
+        }
+        /*style the link*/
+        .gm-style div div div div div div div div a {
+            color: black;
+        }
+
+    </style>
+
+
+</head>
+<body>
+{{ include('::header.html.twig') }}
+<div id="map"></div>
+
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5lLiS4QvX2BCRkrF8iIZeUDbDnvtuTFE">
+</script>
+<script src="{{ asset('public/js/maplabel.js') }}"></script>
+
+
+<script>
+
+
+    var map;
+
+
+    function init() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: {lat : 53.8552544, lng : 27.6019759},
+            mapTypeId: 'satellite'
+        });
+
+        {% for entity in entities %}
+        var triangleCoords = [
+
+            {% for latlng in entity.area %}
+                {lat: parseFloat('{{ latlng.lat }}'), lng: parseFloat('{{ latlng.lng }}')},
+            {% endfor %}
+        ];
+
+        var mapLabelLatMax = 0;
+        var mapLabelLatMin = 1000;
+        var mapLabelLngMax = 0;
+        var mapLabelLngMin = 1000;
+
+        for (var i = 0; i < triangleCoords.length; i++){
+            if (triangleCoords[i].lat < mapLabelLatMin){
+                mapLabelLatMin = triangleCoords[i].lat;
+            }
+
+            if (triangleCoords[i].lat > mapLabelLatMax){
+                mapLabelLatMax = triangleCoords[i].lat;
+            }
+
+            if (triangleCoords[i].lng < mapLabelLngMin){
+                mapLabelLngMin = triangleCoords[i].lng;
+            }
+            if (triangleCoords[i].lng > mapLabelLngMax){
+                mapLabelLngMax = triangleCoords[i].lng;
+            }
+
+        }
+
+        var mapLabelLat = mapLabelLatMin + ((mapLabelLatMax - mapLabelLatMin) / 2);// (mapLabelLatMax + mapLabelLatMin) / 2;
+        var mapLabelLng = mapLabelLngMin + ((mapLabelLngMax - mapLabelLngMin) / 2);//(mapLabelLngMax + mapLabelLngMin) / 2;
+
+
+        // Construct the polygon.
+        var bermudaTriangle = new google.maps.Polygon({
+            strokeColor: '#fff505',
+            strokeOpacity: 0.9,
+            strokeWeight: 2,
+            label : '{{ entity.title }}',
+            fillOpacity: 0.5,
+            paths: triangleCoords,
+            fillColor: getRandomColor(),
+            title : '{{ entity.title }}',
+            capacity: '{{ entity.capacity }}'
+        });
+
+        bermudaTriangle.setMap(map);
+        bermudaTriangle.addListener('click', showZone{{ entity.id }});
+        function showZone{{ entity.id }}(event) {
+            map.setCenter(event.latLng);
+            map.setZoom(17);
+        }
+
+        var contentString = '<a onclick="showZoneA(' + mapLabelLat +', ' + mapLabelLng + ')" class="infoWindow">'+ '{{ entity.title }}'  + '</a>';
+
+
+        if (mapLabelLatMax) {
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString,
+                position: new google.maps.LatLng(mapLabelLat, mapLabelLng)
+            }).open(map);
+
+        }
+
+        {% endfor %}
+
+        google.maps.event.addListener(map, 'zoom_changed', function() {
+            var zoom = map.getZoom();
+            console.log(zoom);
+
+        });
+
+        infoWindow = new google.maps.InfoWindow;
+    }
+
+    function showZoneA(lat, lng) {
+        map.setCenter(new google.maps.LatLng(lat, lng));
+        map.setZoom(17);
+    }
+
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+
+    google.maps.event.addDomListener(window, 'load', init);
+</script>
+
+
+</body>
+</html>

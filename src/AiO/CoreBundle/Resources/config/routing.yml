@@ -1,0 +1,3 @@
+aio_core_locale:
+    path:     /locale/{locale}
+    defaults: { _controller: AiOCoreBundle:Default:locale }

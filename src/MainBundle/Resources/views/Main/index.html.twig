@@ -1,0 +1,155 @@
+{% extends "::base.html.twig" %}
+{% block styles %}
+    <style>
+        #map {
+            width: 100%;
+            height: 100vh;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="page-content">
+        <div id="map"></div>
+        <button class="map-icon"></button>
+
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ asset('public/js/jquery.min.js') }}"></script>
+
+    <script src="{{ asset('public/js/bootstrap.min.js') }}"></script>
+
+    <script src="{{ asset('public/mobile/framework7/js/framework7.2.2.js') }}"></script>
+    <script>
+
+        function initMap() {
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: {lat : 53.8537544, lng : 27.6019759},
+                //mapTypeId: 'satellite',
+
+                mapTypeId: google.maps.MapTypeId.HYBRID,
+                zoomControl: true,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.RIGHT_TOP
+                },
+                fullscreenControl: false,
+                streetViewControl : false,
+            });
+
+
+            var activeInfoWindow = false;
+            {% for entity in entities %}
+
+
+
+            var contentString{{ entity.id }} =
+                '<div id="content">' +
+                    '<div id="siteNotice"> </div>' +
+                    '<h1 id="firstHeading" class="firstHeading">Сектор {{ entity.title }}</h1> ' +
+                    '<div id="bodyContent" style="margin-bottom: 14px;">' +
+                        '<div class="btn-left">' +
+                            '<a href="{{ path('zone_info', { id : entity.id }) }}" class="btn btn-info">Информация</a>' +
+                        '</div>' +
+                        '<div class="btn-right">' +
+                        '<a href="{{ path('session_create', { zoneId : entity.id }) }}" class="btn btn-info">Начать обход</a>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+
+                var infowindow{{ entity.id }} = new google.maps.InfoWindow({
+                    content: contentString{{ entity.id }}
+                });
+
+
+                var coords = [
+                {% for item in entity.area %}
+                    { lat: {{ item.lat }}, lng: {{ item.lng }} },
+                {% endfor %}
+                ];
+
+
+            var polygons = new google.maps.Polygon({
+                    paths: coords,
+                    strokeColor: '#FFF',
+                    strokeOpacity: 1,
+                    strokeWeight: 1,
+                    fillColor: 'green',
+                    fillOpacity: 0.3,
+                    title : '{{ entity.title }}',
+                    label : '{{ entity.title }}',
+                    capacity : '{{ entity.capacity }}',
+                    zoneId : {{ entity.id }}
+                });
+                polygons.setMap(map);
+
+
+                var markers = new google.maps.Marker({
+                    position: new google.maps.LatLng({{ entity.center.lat }}, {{ entity.center.lng }}),
+                    label: {
+                        text: '{{ entity.title }}',
+                        color: "white",
+                        fontSize : "18px"
+                    },
+                    link: contentString{{ entity.id }},
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 0
+                    }
+                });
+
+                markers.setMap(map);
+
+
+                google.maps.event.addListener(polygons, 'click', function (event) {
+                    //toastLargeMessage.open();
+
+                    if (activeInfoWindow) {
+                        activeInfoWindow.close();
+                    }
+                    infowindow{{ entity.id }}.setContent(contentString{{ entity.id }});
+                    infowindow{{ entity.id }}.setPosition(event.latLng);
+                    infowindow{{ entity.id }}.open(map);
+
+                    activeInfoWindow = infowindow{{ entity.id }};
+
+/*
+                    var height = ($$('.toast').height() + 15).toString() + ' px';
+                    $$('.map-icon').animate({'bottom': height});
+
+                    $$('#title').html(this.title);
+                    $$('#capacity').html(this.capacity);
+
+                    $$('#info').attr('href', '/info/' + this.zoneId + '/');
+                    $$('#session').attr('href', '/form/' + this.zoneId + '/');
+*/
+
+                    var bounds = new google.maps.LatLngBounds();
+                    this.getPath().forEach(function (path, index) {
+                        bounds.extend(path);
+                    });
+                    map.fitBounds(bounds);
+                    map.setZoom(16);
+
+                    //alert(this.title);
+                });
+            {% endfor %}
+
+            google.maps.event.addListenerOnce(map, 'idle', function(){
+                //app.preloader.hide();
+            });
+        }
+
+
+    </script>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpZkaK2LimmNm8kBhAZIF9vq0pcr3PMao&callback=initMap">
+    </script>
+
+{% endblock %}

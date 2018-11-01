@@ -1,0 +1,742 @@
+
+$blue: #455395;
+$dark-blue: #3e3990;
+$white: #ffffff;
+$grey: #a8a6ce;
+
+.white-bg {
+  background-color: $white;
+  color: $blue;
+}
+
+.text-primary {
+  color: $blue;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.mt-50 {
+  margin-top: 50px;
+}
+
+.party-heading-text {
+  font-family: Iskra, sans-serif;
+  font-size: 46px;
+  text-align: center;
+  margin: 60px 0;
+}
+
+body {
+  font-family: Ubuntu, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: $white;
+  background-color: $blue;
+  overflow-x: hidden;
+}
+
+#header {
+  .navbar {
+    background-color: $white;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    -webkit-box-shadow: 0px 0px 19px -4px rgba(69,83,149,1);
+    -moz-box-shadow: 0px 0px 19px -4px rgba(69,83,149,1);
+    box-shadow: 0px 0px 19px -4px rgba(69,83,149,1);
+    .main-menu {
+      padding: 18px 0;
+      ul {
+        li {
+          a {
+            color: $blue;
+            padding-left: 25px;
+            padding-right: 25px;
+            &:hover {
+              background: url("../images/menu-item-bg.png") no-repeat;
+              background-position: center;
+            }
+          }
+          a.active {
+            background: url("../images/menu-item-bg.png") no-repeat;
+            background-position: center;
+          }
+        }
+      }
+      .search-form {
+        input {
+          background-color: $grey;
+          color: $white;
+          border: none;
+          border-radius: 0;
+          &:focus {
+            box-shadow: none;
+          }
+        }
+        button {
+          font-size: 16px;
+          background-color: $grey;
+          border: none;
+          border-radius: 0;
+          margin-left: -5px;
+          span {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+}
+
+.section {
+  padding: 60px 0;
+  .section-title {
+    text-align: center;
+    margin-bottom: 60px;
+    h3 {
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.page-header {
+  text-align: center;
+  border: none;
+  h1 {
+    font-family: Iskra, sans-serif;
+    font-size: 56px;
+    text-align: center;
+    margin: 40px 0 20px 0;
+  }
+  a {
+    font-size: 18px;
+    color: $white;
+    display: block;
+    &:hover {
+      text-decoration: none;
+      color: $grey;
+    }
+  }
+}
+
+.blog-item {
+  margin-bottom: 20px;
+  .blog-item-image {
+    img {
+      width: 100%;
+    }
+  }
+  .blog-item-detail {
+    height: 210px;
+    position: relative;
+    background-color: $white;
+    padding: 20px;
+    color: $blue;
+    .date {
+      bottom: 20px;
+      left: 20px;
+      position: absolute;
+    }
+    a {
+      &:hover {
+        text-decoration: none;
+        color: $grey;
+      }
+    }
+  }
+}
+
+.page-side-banner {
+  padding: 60px 20px;
+  background-color: $blue;
+  color: $white;
+  text-align: left;
+  h3 {
+    margin-bottom: 100px;
+  }
+  a {
+    color: $white;
+    &:hover {
+      text-decoration: none;
+      color: $grey;
+    }
+  }
+}
+
+.article-title {
+  background: url("../images/Solvallsparken.jpg") no-repeat;
+  background-size: cover;
+  height: 500px;
+  h1 {
+    font-size: 52px;
+    margin: 300px 0 0 0;
+  }
+}
+
+.article-content {
+  color: $blue;
+}
+
+.main-section {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background: url("../images/texture-main.png") no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  padding: 0;
+  .bunner {
+    top: 40%;
+    right: 0;
+    left: 0;
+    margin: 0 auto 0;
+    position: absolute;
+    text-align: center;
+    h1 {
+      font-family: Iskra, sans-serif;
+      font-size: 56px;
+      text-align: center;
+      text-shadow: -2px 0 $dark-blue, 0 2px $dark-blue, 2px 0 $dark-blue, 0 -2px $dark-blue;
+    }
+  }
+  .link-more {
+    left: 0;
+    bottom: 40%;
+    right: 0;
+    width: 400px;
+    margin: 0 auto 0;
+    position: absolute;
+    text-align: center;
+    a {
+      font-size: 18px;
+      color: $dark-blue;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.5) none repeat scroll 0% 0%;
+      &:hover {
+        text-decoration: none;
+        color: $blue;
+      }
+    }
+    span {
+      font-size: 20px;
+      margin-top: 5px;
+    }
+  }
+}
+
+.stage-section {
+  .stage-carousel {
+    background: url("../images/stage-slide-bg.png") no-repeat;
+    background-size: contain;
+    padding: 160px 20px;
+    .stage-slide {
+      h2 {
+        font-family: Iskra, sans-serif;
+        font-size: 54px;
+        font-weight: 300;
+        text-transform: uppercase;
+      }
+      .link-stage-detail {
+        margin-top: 50px;
+        a {
+          font-size: 18px;
+          color: $white;
+          margin-right: 10px;
+          &:hover {
+            text-decoration: none;
+            color: $grey;
+          }
+        }
+      }
+    }
+  }
+}
+
+.opinion-section {
+  .opinion-carousel {
+    .opinion-slide {
+      .col-xs-5, .col-xs-7 {
+        padding: 0;
+      }
+      .expert-image {
+        background: url("../images/texture-expert-bg.png") no-repeat;
+        background-size: contain;
+        padding: 50px;
+        img {
+          border: 10px solid $white;
+        }
+      }
+      .expert-detail {
+        padding-left: 40px;
+      }
+      .opinion-text {
+        padding: 50px 0 0 0;
+      }
+    }
+  }
+}
+
+.blog-section {
+  .blog-slide {
+    .blog-item {
+      .blog-item-image {
+        img {
+          width: 100%;
+        }
+      }
+      .blog-item-detail {
+        height: 250px;
+        position: relative;
+        background-color: $white;
+        padding: 20px;
+        color: $blue;
+        .date {
+          bottom: 20px;
+          left: 20px;
+          position: absolute;
+        }
+        a {
+          &:hover {
+            text-decoration: none;
+            color: $grey;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+#footer {
+  background: url("../images/footer-bg.png") no-repeat;
+  background-size: cover;
+  background-color: $blue;
+  padding: 0 0 20px 0;
+  margin-top: 80px;
+  .social-media {
+    a {
+      margin: 0 20px;
+      span {
+        font-size: 50px;
+        color: $white;
+      }
+    }
+  }
+  .subscribe {
+    margin-top: 50px;
+    margin-bottom: 80px;
+    input {
+      width: 250px;
+      height: 61px;
+      background: url("../images/opacity.png") repeat;
+      color: $white;
+      border: none;
+      margin-right: -2px;
+      text-align: center;
+      &:focus {
+        box-shadow: none;
+        outline: none;
+      }
+    }
+    button {
+      width: 250px;
+      height: 61px;
+      background-color: $white;
+      color: $blue;
+      border: none;
+      margin-left: -2px;
+    }
+  }
+}
+
+.copyright {
+  padding: 20px 0;
+  background-color: $white;
+  color: $blue;
+  span {
+    font-size: 14px;
+    font-weight: 300;
+  }
+}
+
+@media (max-width: 768px) {
+  #header {
+    .navbar {
+      .navbar-header {
+        height: 85px;
+        button {
+          border: none;
+          margin-top: 25px;
+          &:focus {
+            background-color: transparent;
+          }
+          .icon-bar {
+            background-color: $dark-blue;
+          }
+        }
+      }
+      .main-menu {
+        padding: 0 0 0 5px;
+        overflow: hidden;
+        .search-form {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+//СТРАНИЦА "О ПРОЕКТЕ"
+
+.about-section {
+  width: 100%;
+  height: 120vh;
+  position: relative;
+  background: url("../images/texture-about.png") no-repeat;
+  background-size: auto 100%;
+  padding: 0;
+  .bunner {
+    top: 30%;
+    right: 0;
+    left: 0;
+    margin: 0 auto 0;
+    position: absolute;
+    text-align: center;
+  }
+  .link-more {
+    left: 0;
+    bottom: 30%;
+    right: 0;
+    width: 400px;
+    margin: 0 auto 0;
+    position: absolute;
+    text-align: center;
+    a {
+      font-size: 18px;
+      color: $white;
+      &:hover {
+        text-decoration: none;
+        color: $blue;
+      }
+    }
+    span {
+      font-size: 20px;
+      margin-top: 5px;
+    }
+  }
+}
+
+.mission-section {
+  margin-top: -150px;
+  .mission-content {
+    color: $blue;
+    p {
+      color: $blue;
+      font-size: 22px;
+      line-height: 1.8;
+    }
+    .info-block {
+      margin-top: 60px;
+    }
+  }
+}
+
+.experts-section {
+  color: $blue;
+  .expert-item {
+    padding: 20px 0;
+    p {
+      font-weight: bold;
+      background: url("../images/expert-item-bg.png") no-repeat;
+      background-position: center;
+    }
+  }
+}
+
+.organizers-section {
+  color: $blue;
+  .organizers-item {
+    margin-bottom: 50px;
+    img {
+      width: 100%;
+    }
+    p {
+      margin-top: -5px;
+      padding: 0;
+      font-size: 20px;
+    }
+  }
+  .organizer {
+    margin-top: 50px;
+    .organizer-img {
+      width: 100% !important;
+    }
+  }
+}
+
+.partner-section {
+  .partner-item {
+    margin: 20px 0;
+    img {
+      width: 100%;
+    }
+  }
+}
+
+//КОНЕЦ СТРАНИЦА "О ПРОЕКТЕ"
+
+//СТРАНИЦА "ГИД"
+
+.guide-section {
+  width: 100%;
+  height: 120vh;
+  position: relative;
+  background: url("../images/texture-guide.png") no-repeat;
+  background-size: 100% auto;
+  padding: 0;
+  .bunner {
+    top: 30%;
+    right: 0;
+    left: 0;
+    margin: 0 auto 0;
+    position: absolute;
+    text-align: center;
+    padding: 50px;
+    h1 {
+      color: $blue;
+    }
+  }
+}
+
+.info-section {
+  color: $blue;
+  margin-top: -300px !important;
+  .info-block {
+    margin-top: 60px;
+    p {
+      font-size: 22px;
+      line-height: 1.8;
+    }
+  }
+}
+
+.guide-tut {
+  color: $blue;
+  .guide-student-item {
+    margin-top: 20px;
+      .info {
+        background: url("../images/guide-tutu.png") no-repeat;
+        background-position: center;
+        height: 125px;
+        text-align: center;
+        span {
+          font-family: Iskra, sans-serif;
+          font-size: 70px;
+          font-weight: bold;
+          text-align: center;
+          vertical-align: middle;
+        }
+      }
+      .detail {
+        height: 125px;
+        span {
+          vertical-align: middle;
+        }
+      }
+  }
+}
+
+.mail-section {
+  .mail-adres {
+    font-size: 24px;
+    color: $white;
+    background-color: $blue;
+    padding: 10px 30px;
+  }
+}
+
+.history-section {
+  background-color: $blue;
+  color: $white;
+  margin-bottom: -80px;
+  h2 {
+    font-family: Iskra, sans-serif;
+    font-size: 35px;
+  }
+}
+
+//КОНЕЦ СТРАНИЦА "ГИД"
+
+//СТРАНИЦА "ПРОЕКТЫ"
+
+.project-item {
+  margin-bottom: 30px;
+  .project-img {
+    img {
+      width: 100%;
+    }
+  }
+  .project-detail {
+    h3 {
+      a {
+        color: $blue;
+      }
+    }
+  }
+  .rating {
+    margin-top: -40px;
+    text-align: center;
+    span {
+      font-size: 50px;
+      font-weight: 600;
+      padding: 20px 20px;
+      border: 5px solid $blue;
+      background-color: $white;
+    }
+    p {
+      margin-top: 25px;
+      font-weight: 300;
+    }
+  }
+}
+
+.guide-serebyanka {
+  h2 {
+    font-family: Iskra, sans-serif;
+    font-size: 38px;
+    margin: -180px 0 20px 40px;
+  }
+  a {
+    color: $white;
+    padding: 10px 30px;
+    background-color: $blue;
+    margin-left: 100px;
+  }
+}
+
+.more-project {
+  .project-item {
+    margin-bottom: 30px;
+    .project-img {
+      img {
+        width: 100%;
+      }
+    }
+    .project-detail {
+      h3 {
+        a {
+          color: $blue;
+        }
+      }
+    }
+    .rating {
+      margin-top: -30px;
+      text-align: center;
+      span {
+        font-size: 30px;
+        font-weight: 600;
+        padding: 10px 10px;
+        border: 5px solid $blue;
+        background-color: $white;
+      }
+      p {
+        margin-top: 25px;
+        font-weight: 300;
+      }
+    }
+  }
+}
+
+.vote-for-project {
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  border: 10px solid $blue;
+  .vote {
+    border-bottom: 10px solid $blue;
+  }
+  .rating {
+    text-align: center;
+    padding: 30px 0;
+    span {
+      font-size: 60px;
+      font-weight: 600;
+    }
+  }
+}
+
+//КОНЕЦ СТРАНИЦА "ПРОЕКТЫ"
+
+.party-section {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background: url("../images/texture-party.png") no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  padding: 0;
+  .bunner {
+    top: 40%;
+    right: 0;
+    left: 0;
+    margin: 0 auto 0;
+    position: absolute;
+    text-align: center;
+    h1 {
+      font-family: Iskra, sans-serif;
+      font-size: 56px;
+      text-align: center;
+    }
+  }
+  .link-more {
+    left: 0;
+    bottom: 20%;
+    right: 0;
+    width: 400px;
+    margin: 0 auto 0;
+    position: absolute;
+    text-align: center;
+    a {
+      font-size: 18px;
+      color: $white;
+      padding: 10px 20px;
+      &:hover {
+        text-decoration: none;
+        //color: $blue;
+      }
+    }
+    span {
+      font-size: 20px;
+      margin-top: 5px;
+    }
+  }
+}
+
+.party-intro {
+  font-size: 18px;
+  .party-form {
+    margin-top: 60px;
+    input {
+      border: none;
+      border-radius: 0;
+      background-color: $grey;
+      color: $white;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    button {
+      border-radius: 0;
+      color: $blue;
+      margin-top: 30px;
+    }
+  }
+  .party-phone {
+    font-size: 26px;
+  }
+}
+

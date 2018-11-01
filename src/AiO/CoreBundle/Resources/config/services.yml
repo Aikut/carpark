@@ -1,0 +1,33 @@
+parameters:
+    aio.listener.before_controller.class: AiO\CoreBundle\Listener\EventListener
+
+services:
+
+    sonata.media.resizer.custom:
+        class: AiO\CoreBundle\Image\CustomResizer
+        arguments: ['@sonata.media.adapter.image.gd', 'outbound', '@sonata.media.metadata.proxy']
+
+    aio_core.service:
+        class: AiO\CoreBundle\Services\CoreService
+        arguments: ['@doctrine.orm.entity_manager', '@sonata.media.twig.extension', '@service_container']
+
+    aio_base.service:
+        class: AiO\CoreBundle\Services\BaseService
+        arguments: []
+
+    aio_core.file.load:
+        class: AiO\CoreBundle\Services\FileLoaderService
+        arguments: []
+
+
+#    aio.listener.before:
+#        class: '%aio.listener.before_controller.class%'
+#        tags:
+#            - { name: kernel.event_listener, event: kernel.request, method: beforeController }
+
+    aio_core.form.type_extension.media:
+        class: AiO\CoreBundle\Form\Extension\MediaTypeExtension
+        tags:
+            -
+                name: form.type_extension
+                alias: sonata_media_type

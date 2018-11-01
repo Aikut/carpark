@@ -1,0 +1,257 @@
+<script type="text/javascript">
+    var pro ={{ render(path('number_of_projects')) }};
+    var org ={{ render(path('number_of_organizations')) }};
+    var without_org ={{ render(path('number_of_organizations_without_project')) }};
+
+    var ctx = document.getElementById("myChart3").getContext('2d');
+    var myChart3 = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['{{ aio_get.word(app.request.locale, '_state') }}'],
+
+            datasets: [{
+                label: 'проекты',
+                data: [pro],
+                backgroundColor: "rgba(124,191,19,0.7)"
+            }, {
+                label: 'организации',
+                data: [org],
+                backgroundColor: "rgba(61,154,197,0.7)"
+            }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var org ={{ render(path('number_of_organizations')) }};
+    var without_org ={{ render(path('number_of_organizations_without_project')) }};
+
+    var ctx = document.getElementById("myChart4").getContext('2d');
+    var myChart4 = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['{{ aio_get.word(app.request.locale, '_state') }}'],
+
+            datasets: [{
+                label: 'активные',
+                data: [org - without_org],
+                backgroundColor: "rgba(61,154,197,0.7)"
+            }, {
+                label: 'неактивные',
+                data: [without_org],
+                backgroundColor: "rgba(128,128,128,0.7)"
+            }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var ctx = document.getElementById("myChart5").getContext('2d');
+    var myChart5 = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [
+                "{{ aio_get.word(app.request.locale, '_men') }}", "{{ aio_get.word(app.request.locale, '_woman') }}"
+            ],
+            datasets: [{
+                label: 'возраст',
+                data: [
+                    {{ render(path('number_of_projects_beneficiar')) }}
+                ],
+                backgroundColor: [
+                    "#FF6384",
+                    "#36A2EB",
+                    "#FFCE56",
+                    "#59ff5c",
+                    "#59fff0",
+                    "#589fff",
+                    "#e74fff"
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var ctx = document.getElementById("myChart6").getContext('2d');
+    var myChart6 = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [
+                "{{ aio_get.word(app.request.locale, '_big') }}",
+                "{{ aio_get.word(app.request.locale, '_youth') }}",
+                "{{ aio_get.word(app.request.locale, '_children') }}"
+            ],
+            datasets: [{
+                label: 'возраст',
+                data: [
+                    {{ render(path('number_of_projects_beneficiar_with_children')) }}
+                ],
+                backgroundColor: [
+                    "#FF6384",
+                    "#36A2EB",
+                    "#FFCE56",
+                    "#59ff5c",
+                    "#59fff0",
+                    "#589fff",
+                    "#e74fff"
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var ctx = document.getElementById("myChart2").getContext('2d');
+    var myChart2 = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['{{ aio_get.word(app.request.locale, '_state_batken') }}',
+                '{{ aio_get.word(app.request.locale, '_state_kadamjai') }}',
+                '{{ aio_get.word(app.request.locale, '_state_leilek') }}',
+                '{{ aio_get.word(app.request.locale, '_city_batken') }}',
+                '{{ aio_get.word(app.request.locale, '_city_kyzylkya') }}',
+                '{{ aio_get.word(app.request.locale, '_city_suluktu') }}'],
+            datasets: [{
+                label: 'проекты',
+                data: [
+                    {{ render(path('number_of_projects_by_region',{id:13})) }},
+                    {{ render(path('number_of_projects_by_region',{id:14})) }},
+                    {{ render(path('number_of_projects_by_region',{id:15})) }},
+                    {{ render(path('number_of_projects_by_region',{id:16})) }},
+                    {{ render(path('number_of_projects_by_region',{id:17})) }},
+                    {{ render(path('number_of_projects_by_region',{id:18})) }}
+
+                ],
+                backgroundColor: "rgba(237,45,67,0.7)"
+            },
+                {
+                    label: 'организации',
+                    data: [
+                        {{ render(path('number_of_organizations_by_region',{id:13})) }},
+                        {{ render(path('number_of_organizations_by_region',{id:14})) }},
+                        {{ render(path('number_of_organizations_by_region',{id:15})) }},
+                        {{ render(path('number_of_organizations_by_region',{id:16})) }},
+                        {{ render(path('number_of_organizations_by_region',{id:17})) }},
+                        {{ render(path('number_of_organizations_by_region',{id:18})) }}
+
+                    ],
+                    backgroundColor: "rgba(54,45,237,0.7)"
+                }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var ctx = document.getElementById("myChart7").getContext('2d');
+    var myChart7 = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                {% for donor in donors %}
+                {% if (donor.title|length > 10) %}
+                '{{ donor.title| striptags| slice(0, 9) }}..',
+                {% else %}
+                '{{ donor.title }}',
+                {% endif %}
+                {% endfor %}
+            ],
+            datasets: [{
+                label: 'проекты',
+                data: [
+                    {% for donor in donors %}
+                    {{ donor.projects.count }},
+                    {% endfor %}
+                ],
+                backgroundColor: "rgba(237,45,67,0.7)"
+            }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var ctx = document.getElementById('myChart1');
+    var myChart1 = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [
+                {#{% for leg in legacyForms %}#}
+                {#'{{ leg.title }}',#}
+                {#{% endfor %}#}
+            ],
+            datasets: [{
+                label: 'возраст',
+                data: [
+                    {% for leg in legacyForms %}
+                    {{ render(path('number_of_organizations_by_legacy_form',{id:leg.id})) }},
+                    {% endfor %}
+                ],
+                backgroundColor: [
+                    "#FF6384",
+                    "#36A2EB",
+                    "#FFCE56",
+                    "#59ff5c",
+                    "#59fff0",
+                    "#589fff",
+                    "#e74fff"
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+</script>

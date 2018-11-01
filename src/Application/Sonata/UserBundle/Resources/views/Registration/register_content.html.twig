@@ -1,0 +1,76 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="interview-content">
+        <div class="container">
+            <div class="row">
+                <div class="interview-header">
+                    <div class="col-xs-10">
+                        <h2>Регистрация</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="interview-body" id="interview-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        {% for flashMessage in app.session.flashbag.get('sonata_user_error') %}
+                            <div class="alert alert-danger alert-error">Логин или пароль введены неверно</div>
+                            <h1>Логин или пароль введены неверно</h1>
+                        {% endfor %}
+                        {% for flash_message in app.session.flashBag.get('error') %}
+                            <div class="alert alert-danger alert-error">{{ flash_message }}</div>
+                        {% endfor %}
+
+                        <form id="register-form" action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="form-horizontal" role="form">
+
+                            <div class="form-group" id="username">
+                                <label class="col-xs- control-label">Логин</label>
+                                <div class="col-xs-4 ">
+                                    {{ form_widget(form.username, {'attr':{ 'class' : 'form-control' } }) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">Email</label>
+                                <div class="col-xs-4 ">
+                                    {{ form_widget(form.email, {'attr':{ 'class' : 'form-control' } }) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">Пароль</label>
+                                <div class="col-xs-4">
+                                    {{ form_widget(form.plainPassword.first, {'attr':{ 'class' : 'form-control' } }) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {#<label class="col-xs-2 control-label">Парол</label>#}
+                                {{ form_label(form.plainPassword.second, null, {'label_attr': {'class': 'col-xs-3 control-label'}}) }}
+
+
+                                <div class="col-xs-4">
+                                    {{ form_widget(form.plainPassword.second, {'attr':{ 'class' : 'form-control' } }) }}
+                                </div>
+                            </div>
+
+                            {{ form_rest(form) }}
+                            <div class="col-xs-7 text-right">
+                                <input type="button" onclick="submitForm()" class="interview-next-stage-btn" value="Отправить">
+                                <input type="submit" id="submit" class="interview-next-stage-btn" value="далее" style="display: none">
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('username').style.visibility="hidden";
+        function submitForm() {
+            var email = document.getElementById('sonata_user_registration_form_email').value;
+            document.getElementById('sonata_user_registration_form_username').value = email;
+            document.getElementById('submit').click();
+        }
+    </script>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+    sonata.media.admin.media.class: Application\Sonata\MediaBundle\Admin\ORM\MediaAdmin
+    sonata.media.provider.file.class: Application\Sonata\MediaBundle\Provider\FileProvider
+    sonata.media.provider.image.class: Application\Sonata\MediaBundle\Provider\ImageProvider
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    dpolac.twig_lambda.extension:
+        class: DPolac\TwigLambda\LambdaExtension
+        tags: [ { name: twig.extension } ]

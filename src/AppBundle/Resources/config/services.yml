@@ -1,0 +1,29 @@
+imports:
+    - { resource: services/api.yml }
+    - { resource: services/formatter.yml }
+
+services:
+    app.admin.zone:
+        class: AppBundle\Admin\ZoneAdmin
+        arguments: [~, AppBundle\Entity\Zone, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Зоны, label: Зоны, on_top : true }
+        calls:
+            - [ setTemplate, [edit, AppBundle:Template:edit_with_map.html.twig]]
+
+    app.admin.session:
+        class: AppBundle\Admin\SessionAdmin
+        arguments: [~, AppBundle\Entity\Session, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Сессии, label: Сессии, on_top : true }
+
+    app.admin.car:
+        class: AppBundle\Admin\CarAdmin
+        arguments: [~, AppBundle\Entity\Car, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Авто, label: Авто, on_top : true }
+
+
+    app.service.map:
+        class: AppBundle\Service\MapService
+        arguments: ['@doctrine.orm.entity_manager', '@app.formatter.zone']

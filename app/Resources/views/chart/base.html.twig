@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+
+    <title>
+        {% block title %}Серебрянка{% endblock %}
+    </title>
+
+
+    {% include "::meta-header.html.twig" %}
+    {% block styles %}{% endblock %}
+</head>
+
+<body style="background-color: white">
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+{% block body %}
+{% endblock %}
+{% include 'footer.html.twig' %}
+{% block javascripts %}
+
+    <script src="{{ asset('//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js') }}"></script>
+    <script src="{{ asset('public/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('public/js/jquery.mousewheel.js') }}"></script>
+    <script src="{{ asset('public/js/jquery.jscrollpane.min.js') }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    <script src="{{ asset('public/js/ripples.min.js') }}"></script>
+    <script src="{{ asset('public/js/leaflet.markercluster-src.js') }}"></script>
+    <script src="{{ asset('public/js/Chart.bundle.min.js') }}"></script>
+    <script src="{{ asset('public/js/Chart.min.js') }}"></script>
+    <script src="{{ asset('public/js/bootstrap.min.js') }}"></script>
+    {#<script src="{{ asset('public/js/main.js') }}"></script>#}
+    <script src="{{ asset('public/js/jquery.magnific-popup.js') }}"></script>
+    {#<script type="text/javascript">#}
+
+
+      {#//  function chart3() {#}
+      {#$('#myChart3').remove(); // this is my <canvas> element#}
+      {#$('#c-myChart3').append('<canvas id="myChart3"><canvas>');#}
+      {#var ctx = document.getElementById('myChart3').getContext('2d');#}
+      {#var myChart3 = new Chart(ctx, {#}
+        {#type: 'line',#}
+        {#data: {#}
+          {#labels: [#}
+            {#2000, 2005, 2010, 2016,#}
+          {#],#}
+          {#datasets: [#}
+            {#{#}
+              {#label: 'test3',#}
+              {#data: [#}
+                {#0, 2 + 2, 2 + 2, 14 + 29,#}
+              {#],#}
+              {#backgroundColor: 'rgba(61,154,197,0.7)',#}
+            {#},#}
+            {#{#}
+              {#label: 'test',#}
+              {#data: [#}
+                {#2 + 2 + 1, 90 + 140 + 13, 143 + 218 + 27, 392 + 269 + 43,#}
+              {#],#}
+              {#backgroundColor: 'rgba(124,191,19,0.7)',#}
+            {#},#}
+          {#],#}
+        {#},#}
+        {#options: {#}
+          {#scales: {#}
+            {#yAxes: [#}
+              {#{#}
+                {#ticks: {#}
+                  {#beginAtZero: true,#}
+                {#},#}
+              {#}],#}
+          {#},#}
+        {#},#}
+      {#});#}
+      {#//  }#}
+    {#</script>#}
+{% endblock %}
+
+</body>
+</html>

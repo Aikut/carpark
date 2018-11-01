@@ -1,0 +1,125 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+
+    encoders:
+#        Symfony\Component\Security\Core\User\User: plaintext
+        FOS\UserBundle\Model\UserInterface: sha512
+    # http://symfony.com/doc/current/book/security.html#hierarchical-roles
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_manager
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+#        dev:
+#            pattern: ^/(_(profiler|wdt)|css|images|js)/
+#            security: false
+
+#        main:
+#            form_login:
+#                # ...
+#                always_use_default_target_path: true
+
+        admin:
+            pattern:            /aio-admin(.*)
+            context:            user
+            form_login:
+                provider:       fos_userbundle
+                login_path:     /aio-admin/login
+                use_forward:    false
+                check_path:     /aio-admin/login_check
+                failure_path:   null
+                default_target_path:            /aio-admin/dashboard
+            logout:
+                path:           /aio-admin/logout
+            anonymous:          true
+        secured_area:
+            anonymous: ~
+            pattern:    ^/
+            form_login:
+                provider: fos_userbundle
+                csrf_provider: form.csrf_provider
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+                success_handler: sonata.user.success_authentication_handler
+                failure_handler: sonata.user.failure_authentication_handler
+                default_target_path:            /
+            logout: true
+
+
+    access_control:
+        # The WDT has to be allowed to anonymous users to avoid requiring the login with the AJAX request
+        - { path: ^/wdt/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/profiler/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        # AsseticBundle paths used when using the controller for assets
+        - { path: ^/js/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/css/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+
+#         URL of FOSUserBundle which need to be available to anonymous users
+#         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#         URL of FOSUserBundle which need to be available to anonymous users
+#
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY } # for the case of a failed login
+        - { path: ^/new$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/check-confirmation-email$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/confirm/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/confirmed$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/request-reset-password$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/send-resetting-email$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/check-resetting-email$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/reset-password/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+
+        # Admin login page needs to be access without credential
+        - { path: ^/aio-admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/aio-admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/aio-admin/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        # Secured part of the site
+        # This config requires being logged for the whole site and having the admin role for the admin part.
+        # Change these rules to adapt them to your needs
+        # - { path: ^/admin/, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN] }
+        - { path: ^/aio-admin/, role:[ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_USER ] }
+        - { path: ^/session, role:[ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_USER ] }
+
+
+    role_hierarchy:
+        ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_MODERATOR ROLE_ALLOWED_TO_SWITCH]
+
+        ROLE_MEDIA_ADMIN:
+                        - ROLE_SONATA_MEDIA_ADMIN_MEDIA_CREATE
+                        - ROLE_SONATA_MEDIA_ADMIN_MEDIA_EDIT
+
+        ROLE_AIO_ADMIN:
+                        - ROLE_USER
+                        - ROLE_MODERATOR
+                        - ROLE_ADMIN
+                        - ROLE_SONATA_MEDIA_ADMIN
+                        - ROLE_SONATA_ADMIN
+                        - ROLE_MEDIA_ADMIN
+                        - ROLE_MAIN_ADMIN_TRANSLATE_ALL
+                        - ROLE_MAIN_ADMIN_TEXT_TRANSLATE_ALL
+                        - ROLE_GALLERY_ADMIN_GALLERY_ALL
+                        - ROLE_GALLERY_ADMIN_GALLERY_HAS_MEDIA_ALL
+#                        - ROLE_CATEGORY_ADMIN_CATEGORY_ALL
+
+        ROLE_CATEGORY_ADMIN:
+                        - ROLE_CATEGORY_ADMIN_CATEGORY_LIST
+                        - ROLE_CATEGORY_ADMIN_CATEGORY_VIEW
+                        - ROLE_CATEGORY_ADMIN_CATEGORY_CREATE
+                        - ROLE_CATEGORY_ADMIN_CATEGORY_EDIT
+                        - ROLE_CATEGORY_ADMIN_CATEGORY_DELETE
+                        - ROLE_CATEGORY_ADMIN_CATEGORY_MASTER

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#2196f3">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>Серебрянка</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <link rel="stylesheet" href="{{ asset('public/mobile/framework7/css/framework7.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/mobile/css/icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/mobile/css/app.css') }}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="statusbar"></div>
+
+    <div class="panel panel-left panel-cover">
+        <div class="view">
+            <div class="page">
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <div class="title">Серебрянка</div>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <ul class="nav navbar-nav">
+                        <li class="block active "><a onclick="gotoUrl('{{ path('main_index') }}')" href="#">Карта</a></li>
+                        <li class="block"><a onclick="gotoUrl('{{ path('parking_by_zone') }}')" href="#">Продолжительность стоянки</a></li>
+                        <li class="block"><a onclick="gotoUrl('{{ path('chart_index') }}')" href="#">Количество автомобилей</a></li>
+                        {% if app.user %}
+                        <li class="block"><a href="#"><i class="icon icon-user">{{ app.user }}</i></a></li>
+                        <li class="block"><a onclick="gotoUrl('{{ path('fos_user_security_logout') }}')" href="{{ path('fos_user_security_logout') }}"><i class="icon icon-back">Выход</i></a></li>
+                        {% else %}
+                        <li class="block"><a class="link" href="{{ path('fos_user_security_login') }}"><i class="icon icon-back">Войти / Регистрация</i></a></li>
+                        {% endif %}
+                    </ul>
+
+                    <hr>
+                    <div class="block">Серебрянка (белор. Серабранка) — микрорайон Минска в составе Ленинского района.</div>
+                    <div class="block" id="info-block">
+                        <p>
+                            Мобильное приложение разработано Mozgami studio и AiO IT company при финансовой поддержке
+                            Европейского Союза. Содержание сайта является предметом ответственности
+                            «Минской урбанистической платформы» и может не отражать точку зрения Европейского Союза.
+                        </p>
+                        <img src="{{ asset('public/mobile/images/logo-euro.jpg') }}" style="width: 100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Your main view, should have "view-main" class -->
+    <div class="view view-main">
+        <!-- Page, data-name contains page name which can be used in callbacks -->
+        <div class="page" data-name="home">
+            <!-- Top Navbar -->
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="#" class="link icon-only panel-open" data-panel="left">
+                            <i class="icon f7-icons ios-only">menu</i>
+                            <i class="icon material-icons md-only">menu</i>
+                        </a>
+                    </div>
+                    <div class="title sliding">Карта</div>
+                    <div class="right">
+                    </div>
+                </div>
+            </div>
+            <div class="page-content">
+                <div id="map"></div>
+                <button class="map-icon"></button>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-2 col-xs-offset-1">
+                    <img src="{{ asset('public/mobile/images/euro-logo.png') }}" class="pull-right" alt="">
+                </div>
+                <div class="col-xs-8">
+                <span>Сайт разработан Mozgami studio и AiO IT company при финансовой поддержке
+                    Европейского Союза. Содержание сайта является предметом ответственности
+                    «Минской урбанистической платформы» и может не отражать точку зрения Европейского Союза.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-screen" id="my-login-screen">
+        <div class="view">
+            <div class="page">
+                <div class="page-content login-screen-content">
+                    <div class="login-screen-title">Авторизация</div>
+                    <div class="block" id="login-message">
+                        <p style="color: red">Неправильное имя пользователя или пароль</p>
+                    </div>
+                    <div class="list">
+                        <ul>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Логин</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="username" required placeholder="Введите логин">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Пароль</div>
+                                    <div class="item-input-wrap">
+                                        <input type="password" name="password" required placeholder="Введите пароль">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="list">
+                        <ul>
+                            <li>
+                                <a  href="#" class="item-link list-button login-button">Войти</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-screen" id="my-signup-screen">
+        <div class="view">
+            <div class="page">
+                <div class="page-content login-screen-content">
+                    <div class="login-screen-title">Регистрация</div>
+                    <div class="block" id="signup-message">
+                        <p style="color: red">Ссылка для подтверждения почты отправлена на адрес asd@asd.kg <br> Перейдите по ней, чтобы подтвердить свою регистрацию</p>
+                    </div>
+                    <div class="list">
+                        <ul>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Логин(email)</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="username" required placeholder="Введите логин">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Пароль</div>
+                                    <div class="item-input-wrap">
+                                        <input type="password" name="password" required placeholder="Введите пароль">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Подтвердите пароль</div>
+                                    <div class="item-input-wrap">
+                                        <input type="password" name="password" required placeholder="Подтвердите пароль">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="list">
+                        <ul>
+                            <li>
+                                <a  href="#" class="item-link list-button login-button">Войти</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Cordova -->
+
+<!--
+<script src="cordova.js"></script>
+-->
+
+<!--<script src="http://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>-->
+<!--<link href="http://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet"/>-->
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+
+
+<!-- Framework7 library -->
+<script src="{{ asset('public/mobile/framework7/js/framework7.2.2.js') }}"></script>
+
+<!-- App routes -->
+<script src="{{ asset('public/mobile/js/config.js') }}"></script>
+
+<script src="{{ asset('public/mobile/js/routes.js') }}"></script>
+
+
+<script>
+
+    routes = [
+        {
+            path: '/',
+            url: './{{ asset('public/mobile/index.html') }}',
+        },
+        {
+            path: '/info/:id/',
+            templateUrl: '/public/mobile/pages/info.html',
+            async: function (routeTo, routeFrom, resolve, reject) {
+                var router = this;
+                var app = router.app;
+                var zoneId = routeTo.params.id;
+                app.preloader.show('green');
+
+                app.request.json(baseUrl + 'session/list/' + zoneId, function (data) {
+                    var zone = {
+                        title : data['zone'].title,
+                        capacity : data['zone'].capacity,
+                        sessions: data['sessions']
+                    };
+                    app.preloader.hide();
+                    resolve(
+                        {
+                            componentUrl: '/public/mobile/pages/info.html'
+                        },
+                        {
+                            context: {
+                                zone: zone
+                            }
+                        }
+                    );
+                });
+            },
+        },
+        {
+            path: '/form/:id/',
+            templateUrl: '/public/mobile/pages/form.html',
+            async: function (routeTo, routeFrom, resolve, reject) {
+                var router = this;
+                var app = router.app;
+                var zoneId = routeTo.params.id;
+
+                app.preloader.show('green');
+
+                app.request({
+                    url: baseUrl + 'session/create/' + zoneId,
+                    dataType: 'json',
+                    //async: false,
+                    beforeSend : function(xhr){
+                        xhr.setRequestHeader('token', localStorage.getItem("user_token"));
+                    },
+                    success: function (data) {
+                        var zone = data['zone'];
+                        var session = data['session'];
+                        app.preloader.hide();
+
+                        resolve(
+                            {
+                                componentUrl: '/public/mobile/pages/form.html',
+                            },
+                            {
+                                context: {
+                                    zone: zone,
+                                    session : session
+                                }
+                            }
+                        );
+                    },
+                    error: function (xhr, status){
+                        alert(status);
+                    }
+                });
+
+
+
+            },
+        },
+
+        {
+            path: '(.*)',
+            url: '/public/mobile/pages/404.html',
+        },
+    ];
+
+</script>
+
+
+<script src="{{ asset('public/mobile/js/app.js') }}"></script>
+
+<script>
+    function gotoUrl(url) {
+        window.location.href = url;
+    }
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpZkaK2LimmNm8kBhAZIF9vq0pcr3PMao&callback=initMap">
+</script>
+
+</body>
+</html>

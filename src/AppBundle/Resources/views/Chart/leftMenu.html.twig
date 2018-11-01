@@ -1,0 +1,32 @@
+
+<h3 class="result-title">
+
+    <a data-toggle="collapse" id="collapse-btn" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Результаты
+
+        <i class="fa fa-caret-down"></i>
+    </a>
+
+</h3>
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+
+        {% for item in zone %}
+            {% if type == 'parking-time' %}
+                <a href="{{ path('parking_by_zone',{'zone':item.id}) }}">
+                    Зона {{ item.title }}
+                    <br>
+                    <br>
+                </a>
+            {% else %}
+                <a href="{{ path('chart',{'zone':item.id}) }}">
+                    Зона {{ item.title }}
+                    <br>
+                    <br>
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
